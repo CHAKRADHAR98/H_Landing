@@ -1,36 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react';
-import anime from 'animejs/lib/anime.es.js';
+import React, { useEffect, useRef } from 'react';
+import { animate, stagger } from 'animejs';
+import Image from 'next/image';
 import { AnimatedText } from '@/components/ui/animated-text';
-import { Button } from '@/components/ui/button';
+import { AnimatedCard } from '@/components/ui/animated-card';
 
 export function AdminDashboardSection() {
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState('users');
   
-  // Animation for dashboard appearance
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          anime({
-            targets: dashboardRef.current,
+          const dashboard = dashboardRef.current;
+          if (!dashboard) return;
+          
+          // Animate dashboard elements
+          const chartElements = dashboard.querySelectorAll('.dashboard-chart');
+          const dataElements = dashboard.querySelectorAll('.dashboard-data');
+          
+          animate(chartElements, {
             opacity: [0, 1],
-            translateY: [50, 0],
-            duration: 800,
+            translateY: [20, 0],
+            delay: stagger(150),
             easing: 'easeOutExpo',
           });
           
-          // Animate dashboard elements
-          anime({
-            targets: '.dashboard-element',
+          animate(dataElements, {
             opacity: [0, 1],
-            translateY: [20, 0],
-            delay: anime.stagger(100, {start: 300}),
-            duration: 600,
-            easing: 'easeOutQuad',
+            scale: [0.9, 1],
+            delay: stagger(100, {start: 300}),
+            easing: 'easeOutExpo',
           });
-          
-          observer.unobserve(entries[0].target);
         }
       },
       { threshold: 0.2 }
@@ -47,271 +47,364 @@ export function AdminDashboardSection() {
     };
   }, []);
   
-  // Fake user data for demo
-  const users = [
-    { id: 1, name: 'Alice', publicKey: 'DjT9n5...4Xzjk', role: 'Admin', lastAccess: '2 hours ago' },
-    { id: 2, name: 'Bob', publicKey: 'H7Rc6t...8Kmns', role: 'Resident', lastAccess: '1 day ago' },
-    { id: 3, name: 'Carol', publicKey: 'L9Pq2w...5Trfv', role: 'Guest', lastAccess: 'Never' },
-  ];
-  
-  // Fake access logs for demo
-  const logs = [
-    { id: 1, user: 'Alice', door: 'Main Entrance', time: '2 hours ago', status: 'Granted' },
-    { id: 2, user: 'Bob', door: 'Gym Access', time: '1 day ago', status: 'Granted' },
-    { id: 3, user: 'Unknown', door: 'Server Room', time: '3 days ago', status: 'Denied' },
-  ];
-  
   return (
-    <section id="admin-dashboard" className="py-24 bg-gray-50 dark:bg-gray-900">
+    <section className="py-24 bg-gray-100 dark:bg-gray-800">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <AnimatedText
-            text="Powerful Admin Dashboard"
+            text="Powerful Management Dashboard"
             className="text-4xl md:text-5xl font-bold mb-4 text-primary"
             animation="slideUp"
           />
           <AnimatedText
-            text="Complete control over your access system with an intuitive management interface"
+            text="Complete control and visibility over your access control system"
             className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
             animation="fadeIn"
             delay={400}
           />
         </div>
         
-        <div 
-          ref={dashboardRef}
-          className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden opacity-0"
-        >
-          {/* Dashboard Header */}
-          <div className="bg-primary p-4 text-white">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-bold dashboard-element">Heimdall Admin Panel</h3>
-              <div className="flex items-center space-x-2 dashboard-element">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        <div className="max-w-6xl mx-auto" ref={dashboardRef}>
+          <AnimatedCard className="p-6 shadow-xl rounded-2xl overflow-hidden bg-white dark:bg-gray-700">
+            {/* Dashboard Header */}
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-200 dark:border-gray-600 pb-6">
+              <div className="flex items-center mb-4 md:mb-0">
+                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mr-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Heimdall Security Dashboard</h2>
+              </div>
+              
+              <div className="flex space-x-4">
+                <div className="px-4 py-2 bg-gray-100 dark:bg-gray-600 rounded-md flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 mr-2 text-primary">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span className="text-sm text-gray-600 dark:text-gray-300">Last 30 days</span>
+                </div>
+                
+                <button className="px-4 py-2 bg-primary text-white rounded-md flex items-center hover:bg-primary/90 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5 mr-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>Export</span>
+                </button>
               </div>
             </div>
-          </div>
-          
-          {/* Dashboard Tabs */}
-          <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="flex">
-              <button
-                className={`dashboard-element px-6 py-3 text-sm font-medium ${
-                  activeTab === 'users'
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-gray-500 hover:text-primary'
-                }`}
-                onClick={() => setActiveTab('users')}
-              >
-                Users & Permissions
-              </button>
-              <button
-                className={`dashboard-element px-6 py-3 text-sm font-medium ${
-                  activeTab === 'logs'
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-gray-500 hover:text-primary'
-                }`}
-                onClick={() => setActiveTab('logs')}
-              >
-                Access Logs
-              </button>
-              <button
-                className={`dashboard-element px-6 py-3 text-sm font-medium ${
-                  activeTab === 'settings'
-                    ? 'text-primary border-b-2 border-primary'
-                    : 'text-gray-500 hover:text-primary'
-                }`}
-                onClick={() => setActiveTab('settings')}
-              >
-                System Settings
-              </button>
-            </nav>
-          </div>
-          
-          {/* Dashboard Content */}
-          <div className="p-6">
-            {activeTab === 'users' && (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="text-lg font-medium dashboard-element">Manage Users</h4>
-                  <Button size="sm" className="dashboard-element">Add User</Button>
+            
+            {/* Dashboard Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div className="dashboard-data bg-gray-50 dark:bg-gray-600 rounded-lg p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">Total Access Events</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">13,495</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-700/30 flex items-center justify-center text-green-500 dark:text-green-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </div>
                 </div>
-                
-                <div className="overflow-x-auto">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Name</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Public Key</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Role</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Last Access</th>
-                        <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {users.map((user) => (
-                        <tr 
-                          key={user.id} 
-                          className="border-b border-gray-200 dark:border-gray-700 dashboard-element hover:bg-gray-50 dark:hover:bg-gray-700"
-                        >
-                          <td className="px-4 py-3 whitespace-nowrap">{user.name}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className="font-mono text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                              {user.publicKey}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              user.role === 'Admin' 
-                                ? 'bg-primary/10 text-primary' 
-                                : user.role === 'Resident'
-                                ? 'bg-secondary/10 text-secondary'
-                                : 'bg-accent/10 text-accent'
-                            }`}>
-                              {user.role}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm">{user.lastAccess}</td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-right">
-                            <button className="text-primary hover:text-primary/80 mr-3">Edit</button>
-                            <button className="text-red-600 hover:text-red-500">Revoke</button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="flex items-center mt-4">
+                  <span className="text-green-500 dark:text-green-400 flex items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    8.2%
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">vs previous month</span>
                 </div>
               </div>
-            )}
+              
+              <div className="dashboard-data bg-gray-50 dark:bg-gray-600 rounded-lg p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">Active Users</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">2,856</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-700/30 flex items-center justify-center text-blue-500 dark:text-blue-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex items-center mt-4">
+                  <span className="text-green-500 dark:text-green-400 flex items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    12.4%
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">vs previous month</span>
+                </div>
+              </div>
+              
+              <div className="dashboard-data bg-gray-50 dark:bg-gray-600 rounded-lg p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">Denied Access</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">124</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-700/30 flex items-center justify-center text-red-500 dark:text-red-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex items-center mt-4">
+                  <span className="text-red-500 dark:text-red-400 flex items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                    3.2%
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">vs previous month</span>
+                </div>
+              </div>
+              
+              <div className="dashboard-data bg-gray-50 dark:bg-gray-600 rounded-lg p-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-300">Secured Areas</p>
+                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white mt-1">42</h3>
+                  </div>
+                  <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-700/30 flex items-center justify-center text-purple-500 dark:text-purple-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex items-center mt-4">
+                  <span className="text-green-500 dark:text-green-400 flex items-center text-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    </svg>
+                    5.0%
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">vs previous month</span>
+                </div>
+              </div>
+            </div>
             
-            {activeTab === 'logs' && (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="text-lg font-medium dashboard-element">Access Logs</h4>
-                  <div className="dashboard-element">
-                    <select className="text-sm border border-gray-300 rounded px-2 py-1">
-                      <option>All Entries</option>
-                      <option>Granted Only</option>
-                      <option>Denied Only</option>
-                    </select>
+            {/* Dashboard Charts */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <div className="dashboard-chart lg:col-span-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-6 shadow-sm">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Access Activity</h3>
+                  <div className="flex space-x-2">
+                    <button className="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">Daily</button>
+                    <button className="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-full">Weekly</button>
+                    <button className="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-full">Monthly</button>
                   </div>
                 </div>
                 
-                <div className="overflow-x-auto">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200 dark:border-gray-700">
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">User</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Access Point</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Time</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dashboard-element">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {logs.map((log) => (
-                        <tr 
-                          key={log.id} 
-                          className="border-b border-gray-200 dark:border-gray-700 dashboard-element hover:bg-gray-50 dark:hover:bg-gray-700"
-                        >
-                          <td className="px-4 py-3 whitespace-nowrap">{log.user}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">{log.door}</td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm">{log.time}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              log.status === 'Granted' 
-                                ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' 
-                                : 'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-                            }`}>
-                              {log.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="h-72 relative">
+                  <div className="absolute bottom-0 left-0 right-0 h-64 flex items-end">
+                    <div className="flex-1 mx-1">
+                      <div className="h-40 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[65%] rounded-t-md transition-all group-hover:h-[70%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          125 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Mon</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-48 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[75%] rounded-t-md transition-all group-hover:h-[80%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          182 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Tue</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-56 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[85%] rounded-t-md transition-all group-hover:h-[90%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          204 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Wed</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-52 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[80%] rounded-t-md transition-all group-hover:h-[85%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          198 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Thu</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-60 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[90%] rounded-t-md transition-all group-hover:h-[95%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          215 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Fri</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-32 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[50%] rounded-t-md transition-all group-hover:h-[55%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          112 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Sat</p>
+                    </div>
+                    <div className="flex-1 mx-1">
+                      <div className="h-20 bg-primary/20 dark:bg-primary/30 rounded-t-md relative group">
+                        <div className="absolute bottom-0 left-0 right-0 bg-primary h-[40%] rounded-t-md transition-all group-hover:h-[45%]"></div>
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          87 accesses
+                        </div>
+                      </div>
+                      <p className="text-xs text-center mt-2 text-gray-500 dark:text-gray-400">Sun</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
-            
-            {activeTab === 'settings' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="dashboard-element">
-                  <h4 className="text-lg font-medium mb-4">System Configuration</h4>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Access Token Expiry
-                      </label>
-                      <select className="w-full border border-gray-300 rounded px-3 py-2">
-                        <option>15 minutes</option>
-                        <option>30 minutes</option>
-                        <option>1 hour</option>
-                        <option>24 hours</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Security Level
-                      </label>
-                      <select className="w-full border border-gray-300 rounded px-3 py-2">
-                        <option>Standard</option>
-                        <option>Enhanced</option>
-                        <option>Maximum</option>
-                      </select>
-                    </div>
+              
+              <div className="dashboard-chart bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-6 shadow-sm">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">Access Distribution</h3>
+                
+                <div className="h-72 flex items-center justify-center">
+                  <div className="relative w-48 h-48">
+                    {/* Donut chart with SVG */}
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#1A2980" strokeWidth="20" strokeDasharray="188.5 251.3" />
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#26D0CE" strokeWidth="20" strokeDasharray="62.8 251.3" strokeDashoffset="-188.5" />
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#FF8C42" strokeWidth="20" strokeDasharray="31.4 251.3" strokeDashoffset="-125.7" />
+                      <circle cx="50" cy="50" r="40" fill="transparent" stroke="#ccc" strokeWidth="20" strokeDasharray="25.1 251.3" strokeDashoffset="-94.3" />
+                      <text x="50" y="50" textAnchor="middle" dy=".3em" fontSize="12" fill="#444" className="dark:fill-white">
+                        2,856
+                      </text>
+                      <text x="50" y="62" textAnchor="middle" dy=".3em" fontSize="8" fill="#777" className="dark:fill-gray-300">
+                        Total Users
+                      </text>
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="mt-4 space-y-2">
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <input type="checkbox" id="notifications" className="mr-2" />
-                      <label htmlFor="notifications" className="text-sm text-gray-700 dark:text-gray-300">
-                        Enable access notifications
-                      </label>
+                      <div className="w-3 h-3 bg-primary rounded-full mr-2"></div>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Employees</span>
                     </div>
+                    <span className="text-sm font-medium">75%</span>
                   </div>
-                </div>
-                
-                <div className="dashboard-element">
-                  <h4 className="text-lg font-medium mb-4">Blockchain Settings</h4>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Solana Network
-                      </label>
-                      <select className="w-full border border-gray-300 rounded px-3 py-2">
-                        <option>Mainnet</option>
-                        <option>Testnet</option>
-                        <option>Devnet</option>
-                      </select>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-secondary rounded-full mr-2"></div>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Visitors</span>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Transaction Priority
-                      </label>
-                      <select className="w-full border border-gray-300 rounded px-3 py-2">
-                        <option>Standard</option>
-                        <option>High</option>
-                        <option>Urgent</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        RPC Endpoint
-                      </label>
-                      <input 
-                        type="text" 
-                        className="w-full border border-gray-300 rounded px-3 py-2" 
-                        value="https://api.mainnet-beta.solana.com" 
-                        readOnly
-                      />
-                    </div>
+                    <span className="text-sm font-medium">15%</span>
                   </div>
-                </div>
-                
-                <div className="md:col-span-2 dashboard-element">
-                  <Button className="mt-4">Save Settings</Button>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-accent rounded-full mr-2"></div>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Contractors</span>
+                    </div>
+                    <span className="text-sm font-medium">10%</span>
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+            
+            {/* Recent Activity */}
+            <div className="dashboard-chart bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-6 shadow-sm">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Recent Activity</h3>
+                <button className="text-sm text-primary hover:underline">View All</button>
+              </div>
+              
+              <div className="space-y-4">
+                {[
+                  { 
+                    user: "Alex Johnson", 
+                    action: "Door Access Granted", 
+                    location: "Main Entrance", 
+                    time: "2 minutes ago",
+                    color: "green"
+                  },
+                  { 
+                    user: "Sarah Miller", 
+                    action: "Door Access Granted", 
+                    location: "Conference Room", 
+                    time: "15 minutes ago",
+                    color: "green"
+                  },
+                  { 
+                    user: "Unknown User", 
+                    action: "Door Access Denied", 
+                    location: "Server Room", 
+                    time: "32 minutes ago",
+                    color: "red"
+                  },
+                  { 
+                    user: "James Wilson", 
+                    action: "Door Access Granted", 
+                    location: "Office #212", 
+                    time: "1 hour ago",
+                    color: "green"
+                  },
+                  { 
+                    user: "Emily Davis", 
+                    action: "Permission Updated", 
+                    location: "Admin Dashboard", 
+                    time: "3 hours ago",
+                    color: "blue"
+                  },
+                ].map((activity, index) => (
+                  <div key={index} className="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-gray-600">
+                    <div className="flex items-center">
+                      <div className={`w-10 h-10 rounded-full bg-${activity.color}-100 dark:bg-${activity.color}-700/30 flex items-center justify-center text-${activity.color}-500 dark:text-${activity.color}-400 mr-4`}>
+                        {activity.color === "green" && (
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        )}
+                        {activity.color === "red" && (
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                          </svg>
+                        )}
+                        {activity.color === "blue" && (
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-1.543-.94-3.31.826-2.37 2.37a1.724 1.724 0 00-1.065 2.572c-1.756.426-1.756 2.924 0 3.35a1.724 1.724 0 001.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-800 dark:text-white">{activity.user}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{activity.action} • {activity.location}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="mt-4 text-center">
+                <button className="text-sm text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                  Load More
+                </button>
+              </div>
+            </div>
+          </AnimatedCard>
+          
+          <div className="text-center mt-8">
+            <p className="text-sm text-gray-500 dark:text-gray-400">All access events are securely recorded on the Solana blockchain for immutable audit trails.</p>
           </div>
         </div>
       </div>

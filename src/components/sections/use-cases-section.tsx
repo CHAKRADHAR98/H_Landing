@@ -1,147 +1,168 @@
 import React, { useEffect, useRef } from 'react';
-import anime from 'animejs/lib/anime.es.js';
+import { animate, stagger } from 'animejs';
 import { AnimatedText } from '@/components/ui/animated-text';
 import { AnimatedCard } from '@/components/ui/animated-card';
+import Image from 'next/image';
 
-interface UseCaseProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  delay?: number;
-}
-
-function UseCase({ title, description, icon, delay = 0 }: UseCaseProps) {
-  const useCaseRef = useRef<HTMLDivElement>(null);
+export function UseCasesSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            anime({
-              targets: entry.target,
-              opacity: [0, 1],
-              translateY: [20, 0],
-              duration: 800,
-              delay,
-              easing: 'easeOutExpo',
-            });
-            observer.unobserve(entry.target);
-          }
-        });
+        if (entries[0].isIntersecting) {
+          const section = sectionRef.current;
+          if (!section) return;
+          
+          // Animate use case items
+          const useCaseItems = section.querySelectorAll('.use-case-item');
+          
+          animate(useCaseItems, {
+            opacity: [0, 1],
+            translateY: [30, 0],
+            delay: stagger(150),
+            easing: 'easeOutExpo',
+          });
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.2 }
     );
     
-    if (useCaseRef.current) {
-      observer.observe(useCaseRef.current);
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
     
     return () => {
-      if (useCaseRef.current) {
-        observer.unobserve(useCaseRef.current);
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
       }
     };
-  }, [delay]);
+  }, []);
+  
+  const useCases = [
+    {
+      title: "Corporate Offices",
+      description: "Secure building access for employees and visitors while maintaining detailed audit logs.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+    },
+    {
+      title: "Residential Buildings",
+      description: "Eliminate key management issues for apartment complexes and gated communities.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      ),
+    },
+    {
+      title: "Data Centers",
+      description: "Enhance security with immutable access logs for regulatory compliance.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+        </svg>
+      ),
+    },
+    {
+      title: "Healthcare Facilities",
+      description: "Control access to restricted areas while maintaining HIPAA compliance.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+    },
+    {
+      title: "Educational Institutions",
+      description: "Secure campus buildings with customizable access for students, faculty, and staff.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+          <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+        </svg>
+      ),
+    },
+    {
+      title: "Hospitality & Events",
+      description: "Provide seamless access for guests with time-limited digital credentials.",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-10 h-10">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+        </svg>
+      ),
+    },
+  ];
   
   return (
-    <div ref={useCaseRef} className="opacity-0">
-      <AnimatedCard className="h-full p-6 text-center" glowOnHover={true}>
-        <div className="text-accent mb-4 flex justify-center">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold mb-3 text-primary">{title}</h3>
-        <p className="text-gray-600 dark:text-gray-300">{description}</p>
-      </AnimatedCard>
-    </div>
-  );
-}
-
-export function UseCasesSection() {
-  return (
-    <section id="use-cases" className="py-24 bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4" ref={sectionRef}>
         <div className="text-center mb-16">
           <AnimatedText
-            text="Perfect For"
+            text="Use Cases"
             className="text-4xl md:text-5xl font-bold mb-4 text-primary"
             animation="slideUp"
           />
           <AnimatedText
-            text="Heimdall transforms access control for a variety of spaces and organizations"
+            text="Heimdall works anywhere security matters"
             className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto"
             animation="fadeIn"
             delay={400}
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <UseCase
-            title="Office Buildings"
-            description="Securely manage access to offices, conference rooms, and sensitive areas with customizable permissions."
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-              </svg>
-            }
-          />
-          
-          <UseCase
-            title="Apartment Complexes"
-            description="Give residents secure access to buildings, amenities, and common areas without physical keys."
-            delay={150}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-              </svg>
-            }
-          />
-          
-          <UseCase
-            title="Co-Working Spaces"
-            description="Dynamically manage membership access and meeting room bookings with time-based restrictions."
-            delay={300}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-              </svg>
-            }
-          />
-          
-          <UseCase
-            title="Hotels & Hospitality"
-            description="Create seamless guest experiences with automatic check-in/out and temporary access permissions."
-            delay={450}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 01-.75.75h-.75m-6-1.5H2.25m19.5 0h-7.5m0-1.5h7.5m-7.5 3h7.5m-7.5-3v3m7.5-3v3M3 13.5h16.5m-16.5 3h16.5m-16.5-3v3m0-3v3" />
-              </svg>
-            }
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {useCases.map((useCase, index) => (
+            <div key={index} className="use-case-item opacity-0">
+              <AnimatedCard className="h-full p-6 flex flex-col">
+                <div className="bg-primary/10 rounded-lg p-4 inline-block text-primary mb-4">
+                  {useCase.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-white">{useCase.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{useCase.description}</p>
+                <button className="text-primary font-semibold mt-auto flex items-center hover:underline">
+                  Learn More
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 ml-1">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </AnimatedCard>
+            </div>
+          ))}
         </div>
         
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <UseCase
-            title="Educational Institutions"
-            description="Control access to buildings, labs, and dormitories with granular permission settings for students and staff."
-            delay={600}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
-              </svg>
-            }
-          />
-          
-          <UseCase
-            title="Data Centers & Secure Facilities"
-            description="Implement military-grade security for high-security areas with detailed audit trails and biometric integration."
-            delay={750}
-            icon={
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
-              </svg>
-            }
-          />
+        <div className="mt-20">
+          <AnimatedCard className="p-8 bg-gradient-to-r from-primary to-secondary text-white rounded-xl">
+            <div className="flex flex-col md:flex-row items-center">
+              <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                <h3 className="text-2xl font-bold mb-4">Ready for Any Access Control Challenge</h3>
+                <p className="mb-6">
+                  Heimdall's flexible architecture makes it adaptable to any environment where secure access control is needed. Our system scales from single doors to enterprise-wide deployments.
+                </p>
+                <div className="flex space-x-2">
+                  <span className="bg-white/20 rounded-full px-3 py-1 text-sm">Enterprise</span>
+                  <span className="bg-white/20 rounded-full px-3 py-1 text-sm">Residential</span>
+                  <span className="bg-white/20 rounded-full px-3 py-1 text-sm">Government</span>
+                </div>
+              </div>
+              <div className="md:w-1/2 relative">
+                <div className="aspect-video relative rounded-lg overflow-hidden shadow-xl">
+                  {/* Placeholder for an image - in a real app, use next/image */}
+                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" className="w-8 h-8">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedCard>
         </div>
       </div>
     </section>

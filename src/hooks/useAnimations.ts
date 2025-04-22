@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import anime from 'animejs/lib/anime.es.js';
+import { animate, stagger } from 'animejs';
 
 // Hook for creating a staggered text animation
 export function useTextAnimation(
@@ -31,19 +31,17 @@ export function useTextAnimation(
       }
     });
 
-    // Animate each character
-    anime.timeline()
-      .add({
-        targets: `${selector} span`,
-        opacity: [0, 1],
-        translateY: [20, 0],
-        translateX: [0, 0],
-        translateZ: 0,
-        rotateZ: [20, 0],
-        duration: options.duration,
-        delay: options.delay,
-        easing: options.easing,
-      });
+    // Animate each character - use a simple chain of animations instead of timeline
+    animate(`${selector} span`, {
+      opacity: [0, 1],
+      translateY: [20, 0],
+      translateX: [0, 0],
+      translateZ: 0,
+      rotateZ: [20, 0],
+      duration: options.duration,
+      delay: options.delay,
+      easing: options.easing,
+    });
   }, [selector, options]);
 }
 
@@ -58,8 +56,7 @@ export function useScrollAnimation(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            anime({
-              targets: entry.target,
+            animate(entry.target, {
               ...animation,
               easing: 'easeOutExpo',
               duration: 800,
@@ -95,22 +92,23 @@ export function useParticleEffect(containerId: string, particleCount = 20) {
       particle.classList.add('particle');
       container.appendChild(particle);
 
-      // Set initial random position
-      anime.set(particle, {
-        translateX: anime.random(0, container.offsetWidth),
-        translateY: anime.random(0, container.offsetHeight),
-        scale: anime.random(0.2, 1),
-        opacity: anime.random(0.2, 0.8),
-      });
+      // Set initial random position - using Math.random instead of anime.random
+      const randomX = Math.random() * container.offsetWidth;
+      const randomY = Math.random() * container.offsetHeight;
+      const randomScale = 0.2 + Math.random() * 0.8; // 0.2 to 1
+      const randomOpacity = 0.2 + Math.random() * 0.6; // 0.2 to 0.8
+      
+      particle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+      particle.style.scale = randomScale.toString();
+      particle.style.opacity = randomOpacity.toString();
 
       // Animate each particle
-      anime({
-        targets: particle,
-        translateX: () => anime.random(0, container.offsetWidth),
-        translateY: () => anime.random(0, container.offsetHeight),
-        scale: () => anime.random(0.2, 1),
-        opacity: () => anime.random(0.2, 0.8),
-        duration: () => anime.random(3000, 8000),
+      animate(particle, {
+        translateX: () => Math.random() * container.offsetWidth,
+        translateY: () => Math.random() * container.offsetHeight,
+        scale: () => 0.2 + Math.random() * 0.8,
+        opacity: () => 0.2 + Math.random() * 0.6,
+        duration: () => 3000 + Math.random() * 5000, // 3000 to 8000
         easing: 'easeInOutQuad',
         loop: true,
         direction: 'alternate',
@@ -153,8 +151,7 @@ export function useSvgMorph(
 
     elements.forEach((el) => {
       if (el instanceof SVGPathElement) {
-        anime({
-          targets: el,
+        animate(el, {
           d: paths,
           easing: 'easeInOutQuad',
           duration: duration,

@@ -24,9 +24,12 @@ export function AnimatedDoor({
     const doorElement = doorRef.current;
     if (!doorElement) return;
     
+    const doorPart = doorElement.querySelector('#door') as SVGGElement;
+    if (!doorPart) return;
+    
     if (!isOpen) {
       // Animate door opening
-      animate(doorElement.querySelector('#door'), {
+      animate(doorPart, {
         translateX: '70%',
         rotateY: '-30deg',
         duration: 1000,
@@ -38,7 +41,7 @@ export function AnimatedDoor({
       });
     } else {
       // Animate door closing
-      animate(doorElement.querySelector('#door'), {
+      animate(doorPart, {
         translateX: '0%',
         rotateY: '0deg',
         duration: 1000,
@@ -53,21 +56,28 @@ export function AnimatedDoor({
     if (isLocked) {
       setHasQrScanned(true);
       
+      const qrCode = doorRef.current?.querySelector('#qr-code') as SVGGElement;
+      const lock = doorRef.current?.querySelector('#lock') as SVGCircleElement;
+      
       // Animate QR code scan effect
-      animate(doorRef.current?.querySelector('#qr-code'), {
-        opacity: [1, 0.5, 1],
-        scale: [1, 1.2, 1],
-        duration: 800,
-        easing: 'easeInOutQuad'
-      });
+      if (qrCode) {
+        animate(qrCode, {
+          opacity: [1, 0.5, 1],
+          scale: [1, 1.2, 1],
+          duration: 800,
+          easing: 'easeInOutQuad'
+        });
+      }
       
       // Animate lock unlocking
-      animate(doorRef.current?.querySelector('#lock'), {
-        fill: ['#FF5555', '#55FF55'],
-        scale: [1, 1.2, 1],
-        duration: 800,
-        easing: 'easeInOutQuad'
-      });
+      if (lock) {
+        animate(lock, {
+          fill: ['#FF5555', '#55FF55'],
+          scale: [1, 1.2, 1],
+          duration: 800,
+          easing: 'easeInOutQuad'
+        });
+      }
     }
   };
   
