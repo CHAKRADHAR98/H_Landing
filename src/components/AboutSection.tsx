@@ -25,20 +25,19 @@ const AboutSection = () => {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
           {/* Image/Visual side with animation */}
           <div className={`w-full lg:w-1/2 relative transition-all duration-700 transform ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}>
-            <div className="relative z-10">
-              <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-600 to-gray-800 p-1">
-                <div className="w-full h-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-850 grid-pattern relative">
-          
-                 
-                  <img 
-                    src="/ev.jpg" 
-                    alt="Heimdall Device" 
-                    className="w-full h-full object-cover rounded-xl transform transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              </div>
-            </div>
             
+            <div className="relative z-10">
+  <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-gray-600 to-gray-800 p-1 min-h-[300px]">
+    <div className="w-full h-full rounded-xl overflow-hidden bg-neutral-100 dark:bg-neutral-850 grid-pattern relative">
+      <img 
+        src="/ev.jpg" 
+        alt="Heimdall Device" 
+        className="w-full h-full object-cover rounded-xl transform transition-transform duration-300 hover:scale-105"
+      />
+    </div>
+  </div>
+</div>
+
             {/* Decorative elements */}
             <div className="absolute -bottom-6 -left-6 w-32 h-32 border-4 border-gray-400/20 rounded-2xl -z-10"></div>
             <div className="absolute -top-6 -right-6 w-24 h-24 border-4 border-gray-300/20 rounded-full -z-10"></div>

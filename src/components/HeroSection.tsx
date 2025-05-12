@@ -28,9 +28,6 @@ const HeroSection = () => {
               Building the foundation for a global energy network - powering cars, drones, 
               and tomorrow's machines
             </p>
-            <Button className="bg-white text-neutral-900 hover:bg-gray-200 text-lg py-6 px-8 rounded-full opacity-0 animate-[fade-in_0.6s_ease-out_0.6s_forwards] hover:scale-105 transition-transform">
-              Buy a charger
-            </Button>
           </div>
           
           {/* Right content - charger image with animation */}
