@@ -46,32 +46,32 @@ const AboutSection = () => {
           {/* Content side with animation */}
           <div className={`w-full lg:w-1/2 transition-all duration-700 delay-300 transform ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              <span className="gradient-text">Reimagining</span> EV Charging with Web3
+              <span className="gradient-text">Reimagining</span> Access Control with Solana
             </h2>
             <p className="text-lg text-neutral-700 dark:text-neutral-300 mb-6">
-              DeCharge Network is building the world's first decentralized charging infrastructure platform, enabling anyone to participate in the growing electric vehicle ecosystem.
+            Project Heimdall is building an access control system that puts security back in your hands, letting anyone secure their spaces without complex keys or unreliable cards.
             </p>
             <p className="text-lg text-neutral-700 dark:text-neutral-300 mb-8">
-              By leveraging blockchain technology, we're creating a transparent, accessible, and community-driven charging network that rewards participants while accelerating the transition to sustainable transportation.
+            By using personal digital signatures, we're creating a simple, reliable, and user-friendly security network that gives you peace of mind while making physical security more accessible for homes and businesses alike.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {[
                 {
-                  title: "Decentralized Ownership",
-                  description: "Own a stake in the charging infrastructure and earn rewards from usage"
+                  title: "Keyless, Tamper-Proof Access",
+                  description: "Use your digital wallet to scan and unlock doors with ease,No physical keys to lose, copy, or steal"
                 },
                 {
-                  title: "Transparent Pricing",
-                  description: "Clear, immutable pricing with no hidden fees or intermediaries"
+                  title: "Cryptographic Security",
+                  description: "Solana verification secures every access attempt."
                 },
                 {
-                  title: "Community Governed",
-                  description: "Network decisions made by token holders through DAO voting"
+                  title: "Real-Time Monitoring & Remote Control",
+                  description: "Manage access permissions instantly from anywhere."
                 },
                 {
-                  title: "Sustainable Future",
-                  description: "Supporting renewable energy sources and carbon offset initiatives"
+                  title: "Easy Installation & Integration",
+                  description: "Works alongside existing locks without replacing your door hardware."
                 }
               ].map((feature, index) => (
                 <div 

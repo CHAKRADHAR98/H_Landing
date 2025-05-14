@@ -20,20 +20,19 @@ const HeroSection = () => {
           {/* Left content with animation */}
           <div className="w-full lg:w-1/2 text-white mb-10 lg:mb-0 animate-fade-in">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 opacity-0 animate-[fade-in_0.6s_ease-out_0.2s_forwards]">
-              <span className="text-gray-300">BRING POWER</span>
+              <span className="text-gray-300">Wallet Authenticated</span>
               <br />
-              <span className="text-gray-300">HOME</span>
+              <span className="text-gray-300">Access Control System</span>
             </h1>
             <p className="text-lg md:text-xl mb-8 max-w-2xl opacity-0 animate-[fade-in_0.6s_ease-out_0.4s_forwards] text-gray-400">
-              Building the foundation for a global energy network - powering cars, drones, 
-              and tomorrow's machines
+            Protecting what matters with smart locks you can trust - no keys, just simple and reliable security for your home and office
             </p>
           </div>
           
           {/* Right content - charger image with animation */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-end opacity-0 animate-[fade-in_0.8s_ease-out_0.5s_forwards]">
             <div className="relative">
-              <div className="w-64 h-64 md:w-96 md:h-96 bg-gray-700 rounded-full opacity-70 blur-sm absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
+              <div className="w-85 h-85 md:w-96 md:h-96 bg-gray-700 rounded-full opacity-70 blur-sm absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse-slow"></div>
               <img 
                 src="/main.jpg" 
                 alt="Heimdall Device" 

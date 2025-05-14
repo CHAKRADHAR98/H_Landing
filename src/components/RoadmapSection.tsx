@@ -17,50 +17,54 @@ const RoadmapSection = () => {
 
   const milestones = [
     {
-      quarter: "Q1 2024",
-      title: "Foundation Phase",
+      quarter: "Q2 2025",
+      title: "MVP Development",
       completed: true,
       items: [
-        "Protocol whitepaper publication",
-        "Core team formation",
-        "Seed funding round",
-        "MVP development"
+        "Hardware prototype completion",
+        "Solana authentication integration",
+        "Web interface development",
+        "Security testing protocol",
+        "Early user feedback collection"
       ]
     },
     {
-      quarter: "Q2 2024",
-      title: "Network Development",
-      completed: true,
-      items: [
-        "Alpha testnet launch",
-        "Initial hardware partnerships",
-        "Community building",
-        "Governance framework design"
-      ]
-    },
-    {
-      quarter: "Q3 2024",
-      title: "Public Beta",
+      quarter: "Q3 2025",
+      title: "Local Market Entry",
       completed: false,
       items: [
-        "Token generation event",
-        "Mainnet beta launch",
-        "Initial charging stations deployment",
-        "Mobile app release"
+        "Production hardware finalization",
+        "Mobile app with wallet integration",
+        "Initial business partnerships",
+        "First commercial installations",
+        "Support system establishment"
       ]
     },
     {
-      quarter: "Q4 2024",
-      title: "Expansion Phase",
+      quarter: "Q4 2025",
+      title: "Feature Enhancement",
       completed: false,
       items: [
-        "Full mainnet launch",
-        "DAO activation",
-        "Multi-chain integration",
-        "Regional expansion program"
+        "Advanced access control features",
+        "Hardware optimization",
+        "Enterprise management dashboard",
+        "Multi-site coordination capabilities",
+        "User experience refinement"
+      ]
+    },
+    {
+      quarter: "Q1 2026",
+      title: "Regional Expansion",
+      completed: false,
+      items: [
+        "Distributor network development",
+        "Real estate partnerships",
+        "Installer certification program",
+        "Scaling support infrastructure",
+        "Advanced analytics platform"
       ]
     }
-  ];
+   ];
 
   return (
     <section id="roadmap" className="py-20 md:py-32 bg-neutral-50 dark:bg-neutral-900 relative overflow-hidden" ref={ref}>
@@ -74,7 +78,7 @@ const RoadmapSection = () => {
             Our <span className="gradient-text">Roadmap</span> to Transformation
           </h2>
           <p className="text-lg text-neutral-700 dark:text-neutral-300">
-            We're building a sustainable future step by step. Track our progress and upcoming milestones as we revolutionize charging infrastructure.
+          We're building a more secure world step by step. Track our progress and upcoming milestones as we transform access control for everyday spaces.
           </p>
         </div>
         

@@ -33,23 +33,23 @@ const TechnologySection = () => {
                 {[
                   {
                     number: "01",
-                    title: "Connect Your Wallet",
-                    description: "Link your Web3 wallet to access the DeCharge Network"
+                    title: "Install & Connect",
+                    description: "Mount the Device"
                   },
                   {
                     number: "02",
-                    title: "Locate a Charging Station",
-                    description: "Find nearby charging points through our app or website"
+                    title: "Scan QR Code",
+                    description: "Scan the displayed QR code with your phone, Heimdall connects to your digital wallet"
                   },
                   {
                     number: "03",
-                    title: "Charge and Pay Seamlessly",
-                    description: "Connect your vehicle and payment processes automatically"
+                    title: "Sign to Verify",
+                    description: "Approve the signature request in your wallet"
                   },
                   {
                     number: "04",
-                    title: "Earn Rewards",
-                    description: "Receive DCT tokens for using or providing charging services"
+                    title: "Access Granted",
+                    description: "The door unlocks automatically, Entry is logged in the system for security"
                   }
                 ].map((step, index) => (
                   <div 

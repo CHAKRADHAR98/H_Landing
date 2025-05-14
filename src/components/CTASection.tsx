@@ -30,10 +30,10 @@ const CTASection = () => {
       <div className="container mx-auto px-4 md:px-6 text-center">
         <div className={`max-w-3xl mx-auto transition-all duration-700 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-            Join the Decentralized Charging Revolution
+          Upgrade Your Security Today
           </h2>
           <p className="text-lg md:text-xl text-white/80 mb-10">
-            Be part of building a sustainable future with community-owned charging infrastructure. Whether you're a driver, investor, or developer, there's a place for you in the DeCharge ecosystem.
+          Be part of creating safer spaces with simpler, stronger access control. Whether you're a homeowner, business, or property manager, Project Heimdall offers security that just works.
           </p>
 
           <h2 className="font-medium mb-2 text-white text-2xl">Join the waitlist</h2>
